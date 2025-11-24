@@ -80,7 +80,8 @@ The main agent that:
     │   ├── matches_1930_2022.csv   (optional)
     │   └── fifa_ranking_2022-10-06.csv   (optional)
     │
-    ├── main.py   ← main agent + tools
+    ├── commentator_agent/
+    │   ├── agent.py
     ├── README.md ← this file
     ├── commentator_podcast.wav (generated at runtime)
     └── detailed_report.md   (generated at runtime)
@@ -110,19 +111,6 @@ Creates a multi‑voice WAV audio file.
     pydantic
     pandas
     wave
-
-------------------------------------------------------------------------
-
-## ▶️ How to Run
-
-1.  Install dependencies
-3.  Run the main script:
-
-```
-    python main.py
-```
-
-4.  Follow the prompts from the root agent.
 
 ------------------------------------------------------------------------
 
