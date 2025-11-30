@@ -1,5 +1,3 @@
-# Gemini Powered Football Commentator - How Multi-Agent Systems are Changing Sports Media
-
 ![GitHub Banner](https://drive.google.com/uc?export=view&id=1AqbMTk2Kxu_Ggzx3GBci5YxysVxL4AJw)
 
 ## ⚽ A New Era of Football Storytelling
