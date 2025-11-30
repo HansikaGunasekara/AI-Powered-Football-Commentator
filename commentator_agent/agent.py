@@ -8,6 +8,7 @@ from google import genai
 from google.genai import types
 from google.adk.tools import ToolContext
 import pathlib
+from commentator_agent.schema import CupSummary, PodcastOutput
 
 # load agent instructions from YAML file
 with open("commentator_agent/instruction.yaml", "r") as f:
@@ -113,23 +114,19 @@ def get_world_cup_result(year: int) -> dict:
 
     champion = row.iloc[0]["Champion"]
     runner_up = row.iloc[0]["Runner-Up"]
+    host = row.iloc[0]["Host"]
+    topscorer = row.iloc[0]["TopScorrer"]
 
     return {
         "year": year,
+        "host": host,
         "champion": champion,
         "runner_up": runner_up,
+        "topscorer": topscorer,
         "summary": f"In {year}, {champion} won the World Cup, with {runner_up} finishing as runner up."
     }
 
-class CupSummary(BaseModel):
-    year: int = Field(description="World Cup year requested by the user")
-    champion: str = Field(description="Champion country")
-    runner_up: str = Field(description="Runner-up country")
-    summary: str = Field(description="Short description of the tournament result")
 
-class PodcastOutput(BaseModel):
-    audio_file: str = Field(description="Path to generated audio file")
-    script: str = Field(description="Script used for the podcast")
 
 
 # 1. Research Agent

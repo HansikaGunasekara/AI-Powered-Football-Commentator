@@ -82,6 +82,8 @@ The main agent that:
     │
     ├── commentator_agent/
     │   ├── agent.py
+    │   ├── instruction.yaml
+    │   ├── schema.py
     ├── README.md ← this file
     ├── commentator_podcast.wav (generated at runtime)
     └── detailed_report.md   (generated at runtime)
@@ -92,7 +94,7 @@ The main agent that:
 
 ### `get_world_cup_result(year: int)`
 
-Loads from the `world_cup.csv` dataset and returns champion + runner‑up.
+Loads from the `world_cup.csv` dataset and returns champion, runner‑up, host country and top scorer.
 
 ### `save_cup_summary_to_mark_down(filename, content)`
 
