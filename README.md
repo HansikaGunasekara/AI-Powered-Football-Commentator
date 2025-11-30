@@ -1,5 +1,5 @@
 ![GitHub Banner](https://drive.google.com/uc?export=view&id=1AqbMTk2Kxu_Ggzx3GBci5YxysVxL4AJw)
-
+## Gemini Powered Football Commentator
 ## ⚽ A New Era of Football Storytelling
 Football has always been fueled by stories - the heartbreaks, comebacks, rivalries, golden generations, and unforgettable finals. Fans don't just want scores; they want context, history and drama.
 
