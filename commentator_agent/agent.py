@@ -3,11 +3,15 @@ from google.adk.tools.agent_tool import AgentTool
 from pydantic import BaseModel, Field
 import pandas as pd
 import wave
+import yaml
 from google import genai
 from google.genai import types
 from google.adk.tools import ToolContext
 import pathlib
 
+# load agent instructions from YAML file
+with open("commentator_agent/instruction.yaml", "r") as f:
+    instructions = yaml.safe_load(f)
 
 # Load FIFA datasets
 #fifa_rankings = pd.read_csv("fifa_dataset/fifa_ranking_2022-10-06.csv")
@@ -132,25 +136,16 @@ class PodcastOutput(BaseModel):
 research_agent = Agent(
     name="world_cup_researcher",
     model="gemini-2.0-flash",
-    instruction="""
-    You are a football researcher. Given a year from the user, call the
-    `get_world_cup_result` tool to retrieve the champion and runner-up.
-    Then summarize the result using the CupSummary schema.
-    """,
+    instruction=instructions['research_agent_instruction'],
     tools=[get_world_cup_result],
     output_schema=CupSummary
 )
-
-
 
 # 3. Podcaster Agent (TTS)
 podcaster_agent = Agent(
     name="football_podcaster_agent",
     model="gemini-2.0-flash",
-    instruction="""
-    Your job is to generate audio using the generate_football_podcast_audio tool.
-    When given a script, call the tool immediately and return the result.
-    """,
+    instruction=instructions['podcaster_agent_instruction'],
     tools=[generate_football_podcast_audio],
     output_schema=PodcastOutput
 )
@@ -159,27 +154,7 @@ root_agent = Agent(
     model='gemini-2.0-flash-live-001',
     name='football_commentary_assistant',
     description='A helpful assistant that provides football commentary and information about the FIFA World Cup.',
-    instruction="""
-    **Your Core Identity:**
-    You are a knowledgeable and engaging football commentary assistant specializing in the FIFA World Cup. You provide insightful analysis, historical context, and historical commentary on matches, players, and tournaments.
-    
-    **Crucial Rules:**
-    1. Always provide accurate and up-to-date information about the FIFA World Cup extracted from the provided dataset.
-    2. Maintain an enthusiastic and engaging tone suitable for football commentary.
-
-    **Required Conversational Workflow:**
-    2. **Data-Driven Responses:** Use the FIFA World Cup dataset to answer questions, provide statistics, and offer historical insights.
-    3. **Engaging Commentary:** Deliver commentary in an engaging manner, suitable for a football audience.
-    1.  **Greet & Query:** The VERY FIRST thing you do is respond to the user with: "Thank you for your interest in FIFA World Cup! Could you please let me know the year you would like information about the World Cup?"
-    2.  **Acknowledge and Inform:** Acknowledge the user's input and inform them that you will gather the relevant information. For example, "Great choice! Let me gather the latest insights and commentary for you."
-    3.  **Search (Background Step):** Immediately after acknowledging, use the `get_world_cup_result` tool to find relevant World Cup information.
-    5.  **Structure the Report (Internal Step):** Use the `CupSummary` schema to structure all gathered information. If world cup data was not found for a user mentioned year, you MUST use "Not Available" in the `champion`, `runner_up` & `summary` fields.
-    6.  **Format for Markdown (Internal Step):** Convert the structured `CupSummaryReport` data from research_agent into a well-formatted Markdown string.
-    7.  **Save the Report (Background Step):** Save the Markdown string using `save_news_to_markdown` with the filename `detailed_report.md`.
-    8.  **Create Podcast Script (Internal Step):** After saving the report, you MUST convert the structured `CupSummaryReport` data into a natural, conversational football commentary script between two hosts, 'Tom' (enthusiastic, bold, dynamic) and 'Sarah' (analytical, calm, confident). Deliver it in an engaging manner, suitable for a football audience.
-    9.  **Generate Audio (Background Step):** Call the `podcaster_agent` tool, passing the complete conversational script you just created to it.
-    10. **Final Confirmation:** After the audio is successfully generated, your final response to the user MUST be: "All done. I've compiled the research report, saved it to `detailed_report.md`, and generated the podcast audio file for you."
-    """,
+    instruction=instructions['root_agent_instruction'],
     tools = [
         AgentTool(agent=research_agent),
         save_cup_summary_to_mark_down,
