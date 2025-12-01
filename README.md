@@ -77,13 +77,15 @@ The main agent that:
     │
     ├── fifa_dataset/
     │   ├── world_cup.csv
-    │   ├── matches_1930_2022.csv   (optional)
-    │   └── fifa_ranking_2022-10-06.csv   (optional)
+    │   ├── matches_1930_2022.csv
+    │   └── fifa_ranking_2022-10-06.csv
     │
     ├── commentator_agent/
     │   ├── agent.py
+    │   ├── tools.py
     │   ├── instruction.yaml
-    │   ├── schema.py
+    │   └── schema.py
+    │
     ├── README.md ← this file
     ├── commentator_podcast.wav (generated at runtime)
     └── detailed_report.md   (generated at runtime)
