@@ -9,6 +9,7 @@ from google.genai import types
 from google.adk.tools import ToolContext
 import pathlib
 from commentator_agent.schema import CupSummary, PodcastOutput
+from commentator_agent.tools import save_cup_summary_to_mark_down
 
 # load agent instructions from YAML file
 with open("commentator_agent/instruction.yaml", "r") as f:
@@ -18,23 +19,6 @@ with open("commentator_agent/instruction.yaml", "r") as f:
 #fifa_rankings = pd.read_csv("fifa_dataset/fifa_ranking_2022-10-06.csv")
 #matches = pd.read_csv("fifa_dataset/matches_1930_2022.csv")
 world_cups = pd.read_csv("fifa_dataset/world_cup.csv")
-
-def save_cup_summary_to_mark_down(filename: str, content: str) -> dict[str, str]:
-    """
-    Saves the given content to a Markdown file in the current directory.
-    """
-    try:
-        if not filename.endswith(".md"):
-            filename += ".md"
-        current_directory = pathlib.Path.cwd()
-        file_path = current_directory / filename
-        file_path.write_text(content, encoding="utf-8")
-        return {
-            "status": "success",
-            "message": f"Successfully saved news to {file_path.resolve()}",
-        }
-    except Exception as e:
-        return {"status": "error", "message": f"Failed to save file: {str(e)}"}
 
 # --------------------------------------------------------------------
 # AUDIO GENERATION TOOL
